@@ -32,8 +32,8 @@ fun main() {
                 }
             }
         }
-    }
-    println("Native Query took $millis")
+    }.inWholeMilliseconds
+    println("Native Query took $millis ms")
 
     millis = measureTime {
         transaction {
@@ -44,6 +44,6 @@ fun main() {
                 )
             }
         }
-    }
-    println("ORM Query took $millis")
+    }.inWholeMilliseconds
+    println("ORM Query took $millis ms")
 }
