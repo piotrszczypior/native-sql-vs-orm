@@ -1,5 +1,6 @@
-package org.pwr.org.pwr
+package org.pwr
 
+import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 
@@ -14,3 +15,12 @@ object Address : Table() {
 
     override val primaryKey = PrimaryKey(id)
 }
+
+data class AddressEntity(
+    val id: Int? = null,
+    val city: String? = null,
+    val street: String? = null,
+    val postCode: String? = null,
+    val streetNumber: Int? = null,
+    val flatNumber: Int? = null
+)
