@@ -16,5 +16,5 @@ public interface SubjectsTeacherRepository extends JpaRepository<SubjectsTeacher
             SELECT s FROM Subject s WHERE s.id IN (
             SELECT st.subjectsid.id FROM SubjectsTeacher st WHERE st.id.teacherusersid = :teacherId)
             """)
-    List<Subject> findByTeacherUserId(@Param("teacherId") Integer teacherusersid);
+    List<Subject> findByTeacherUserId(@Param("teacherId") Integer teacherId);
 }

@@ -13,11 +13,10 @@ public interface UserMapper {
 
     User signUpToUser(SignUpDto userDto);
 
-    // Dodaj mapowanie ról ręcznie
     default String mapRoles(User user) {
         return user.getRole().name();
     }
 
-    @Mapping(target = "role", expression = "java(mapRoles(user))") // Użyj ręcznie dodanej logiki
+    @Mapping(target = "role", expression = "java(mapRoles(user))")
     UserDto toUserDtoWithRoles(User user);
 }
