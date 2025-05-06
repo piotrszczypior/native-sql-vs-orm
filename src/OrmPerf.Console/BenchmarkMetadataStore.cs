@@ -2,7 +2,7 @@ namespace OrmPerf.Console;
 
 public static class BenchmarkMetadataStore
 {
-    public static Dictionary<Type, QueryComparison> BenchmarkQueryComparison { get; } = new Dictionary<Type, QueryComparison>(); 
+    public static Dictionary<Type, QueryComparison> BenchmarkQueryComparison { get; } = new(); 
 }
 
 public class QueryComparison
