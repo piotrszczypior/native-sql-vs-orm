@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrmPerf.Console", "src\OrmPerf.Console\OrmPerf.Console.csproj", "{E03AC212-7E3B-420E-95CF-57B8F326C086}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrmPerf.Persistence", "src\OrmPerf.Persistence\OrmPerf.Persistence.csproj", "{E8B141B2-570E-4382-B346-49949849BD8A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E03AC212-7E3B-420E-95CF-57B8F326C086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E03AC212-7E3B-420E-95CF-57B8F326C086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E03AC212-7E3B-420E-95CF-57B8F326C086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E03AC212-7E3B-420E-95CF-57B8F326C086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8B141B2-570E-4382-B346-49949849BD8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8B141B2-570E-4382-B346-49949849BD8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8B141B2-570E-4382-B346-49949849BD8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8B141B2-570E-4382-B346-49949849BD8A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
