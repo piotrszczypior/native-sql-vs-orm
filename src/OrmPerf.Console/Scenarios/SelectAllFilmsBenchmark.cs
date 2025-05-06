@@ -4,7 +4,7 @@ using OrmPerf.Persistence.Entities;
 
 namespace OrmPerf.Console.Scenarios;
 
-public class SelectBenchmark : Benchmark<SelectBenchmark, FilmEntity>
+public class SelectAllFilmsBenchmark : Benchmark<SelectAllFilmsBenchmark, FilmEntity>
 {
     protected override IQueryable<FilmEntity> OrmQuery => OrmQuerySubject.AsQueryable();
     
