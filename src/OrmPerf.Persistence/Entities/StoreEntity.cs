@@ -5,9 +5,6 @@ namespace OrmPerf.Persistence.Entities;
 
 public class StoreEntity : Entity, IEntityTypeConfiguration<StoreEntity>
 {
-    public int ManagerStaffId { get; set; }
-    public StaffEntity ManagerStaff { get; set; }
-    
     public int AddressId { get; set; }
     public AddressEntity Address { get; set; }
 
@@ -19,8 +16,6 @@ public class StoreEntity : Entity, IEntityTypeConfiguration<StoreEntity>
     
     public void Configure(EntityTypeBuilder<StoreEntity> builder)
     {
-        builder.HasIndex(e => e.ManagerStaffId);
-
         builder.HasMany(e => e.Inventories)
             .WithOne(e => e.Store)
             .HasForeignKey(e => e.StoreId);

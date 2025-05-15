@@ -476,14 +476,14 @@ namespace OrmPerf.Persistence.Migrations
                     b.Property<DateTime>("LastUpdate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("ManagerStaffId")
+                    b.Property<int?>("StaffEntityId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("ManagerStaffId");
+                    b.HasIndex("StaffEntityId");
 
                     b.ToTable("Stores");
                 });
@@ -671,15 +671,11 @@ namespace OrmPerf.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OrmPerf.Persistence.Entities.StaffEntity", "ManagerStaff")
+                    b.HasOne("OrmPerf.Persistence.Entities.StaffEntity", null)
                         .WithMany("Stores")
-                        .HasForeignKey("ManagerStaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StaffEntityId");
 
                     b.Navigation("Address");
-
-                    b.Navigation("ManagerStaff");
                 });
 
             modelBuilder.Entity("OrmPerf.Persistence.Entities.ActorEntity", b =>

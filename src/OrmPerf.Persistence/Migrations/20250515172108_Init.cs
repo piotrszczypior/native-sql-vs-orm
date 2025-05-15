@@ -327,9 +327,9 @@ namespace OrmPerf.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ManagerStaffId = table.Column<int>(type: "integer", nullable: false),
                     AddressId = table.Column<int>(type: "integer", nullable: false),
-                    LastUpdate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastUpdate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    StaffEntityId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -341,11 +341,10 @@ namespace OrmPerf.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Stores_Staff_ManagerStaffId",
-                        column: x => x.ManagerStaffId,
+                        name: "FK_Stores_Staff_StaffEntityId",
+                        column: x => x.StaffEntityId,
                         principalTable: "Staff",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -469,9 +468,9 @@ namespace OrmPerf.Persistence.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stores_ManagerStaffId",
+                name: "IX_Stores_StaffEntityId",
                 table: "Stores",
-                column: "ManagerStaffId");
+                column: "StaffEntityId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Customers_Stores_StoreId",

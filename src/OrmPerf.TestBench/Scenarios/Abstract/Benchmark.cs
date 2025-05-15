@@ -2,25 +2,26 @@ using BenchmarkDotNet.Attributes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
 using Npgsql;
-using OrmPerf.Persistence.Entities;
+using OrmPerf.TestBench.Utilities;
+using Testcontainers.PostgreSql;
 using DbContext = OrmPerf.Persistence.DbContext;
 
-namespace OrmPerf.Console.Scenarios;
+namespace OrmPerf.TestBench.Scenarios.Abstract;
 
 [MemoryDiagnoser]
 [ThreadingDiagnoser]
 [ExceptionDiagnoser]
-public abstract class Benchmark<TInheritor, TEntity>
-    where TInheritor : Benchmark<TInheritor, TEntity>
-    where TEntity : KeylessEntity
+[JsonExporterAttribute.Full]
+public abstract class Benchmark<TInheritor>
 {
     protected IServiceProvider ServiceProvider { get; private set; }
     protected DbContext DbContext { get; private set; }
     protected NpgsqlConnection NpgsqlConnection { get; private set; }
     
     [GlobalSetup]
-    public async Task Setup()
+    public void Setup()
     {
         var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
@@ -28,7 +29,14 @@ public abstract class Benchmark<TInheritor, TEntity>
         
         var serviceCollection = new ServiceCollection();
 
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var postgreSqlContainer = new PostgreSqlBuilder()
+            .WithLogger(NullLogger.Instance)
+            .WithName($"postgres-{typeof(TInheritor).Name.ToLowerInvariant()}-{Guid.NewGuid()}")
+            .Build();
+        
+        AsyncUtilities.RunSync(() => postgreSqlContainer.StartAsync());
+        
+        var connectionString = postgreSqlContainer.GetConnectionString();
         
         serviceCollection.AddDbContext<DbContext>(builder =>
         {
@@ -39,32 +47,16 @@ public abstract class Benchmark<TInheritor, TEntity>
         ServiceProvider = serviceCollection.BuildServiceProvider();
         DbContext = ServiceProvider.GetRequiredService<DbContext>();
         NpgsqlConnection = ServiceProvider.GetRequiredService<NpgsqlConnection>();
-    }
 
-    [GlobalCleanup]
-    public async Task Cleanup()
-    {
-        var queryComparison = new QueryComparison
-        {
-            Sql = SqlQuery,
-            Orm = OrmQuery.ToQueryString()
-        };
-        BenchmarkMetadataStore.BenchmarkQueryComparison.Add(typeof(TInheritor), queryComparison);
-
+        AsyncUtilities.RunSync(() => DbContext.Database.MigrateAsync());
+        AsyncUtilities.RunSync(() => Seeder.SeedAsync(DbContext));
     }
     
     [Benchmark(Baseline = true)]
     public async Task Orm() => await OrmSubject();
-
-
-    protected DbSet<TEntity> OrmQuerySubject => DbContext.Set<TEntity>();
-    protected abstract IQueryable<FilmEntity> OrmQuery { get; }
     protected abstract Task OrmSubject();
     
     [Benchmark]
     public async Task Sql() => await SqlSubject();
-
-    protected abstract string SqlQuery { get; }
     protected abstract Task SqlSubject();
-
 }
