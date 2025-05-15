@@ -40,10 +40,6 @@ public class StaffEntity : Entity, IEntityTypeConfiguration<StaffEntity>
         builder.HasOne(e => e.Store)
             .WithMany(e => e.Staff)
             .HasForeignKey(e => e.StoreId);
-        
-        builder.HasMany(e => e.Stores)
-            .WithOne(e => e.ManagerStaff)
-            .HasForeignKey(e => e.ManagerStaffId);
 
     }
 }

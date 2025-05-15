@@ -1,13 +1,13 @@
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using OrmPerf.Persistence.Entities;
+using OrmPerf.TestBench.Scenarios.Abstract;
 
-namespace OrmPerf.Console.Scenarios;
+namespace OrmPerf.TestBench.Scenarios;
 
-public class SelectAllFilmsBenchmark : Benchmark<SelectAllFilmsBenchmark, FilmEntity>
+public class SelectAllFilmsQueryBenchmark : QueryBenchmark<SelectAllFilmsQueryBenchmark, FilmEntity>
 {
     protected override IQueryable<FilmEntity> OrmQuery => OrmQuerySubject.AsQueryable();
-    
     protected override async Task OrmSubject()
     {
         var films = await OrmQuery.ToListAsync();
@@ -15,7 +15,7 @@ public class SelectAllFilmsBenchmark : Benchmark<SelectAllFilmsBenchmark, FilmEn
 
     protected override string SqlQuery => """
                                           SELECT *
-                                          FROM "Films";
+                                          FROM "Films"
                                           """;
     protected override async Task SqlSubject()
     {

@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "TestBench [Help]": {
+      "commandName": "Project",
+      "commandLineArgs": "--help"
+    },
+    "TestBench [Fast]": {
+      "commandName": "Project",
+      "commandLineArgs": "--filter *SelectAllActorsOfTheMovieWithTheHighestRevenueProjection* --warmupCount 1 --iterationCount 1 --invocationCount 1 --unrollFactor 1 --noOverheadEvaluation"
+    },
+    "TestBench [Regular]": {
+      "commandName": "Project",
+      "commandLineArgs": "--filter *SelectAllActorsOfTheMovieWithTheHighestRevenueProjection*"
+    }
+  }
+}

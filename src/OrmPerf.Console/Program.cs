@@ -1,12 +1,5 @@
-﻿using System.Diagnostics;
-using System.Reflection;
-using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Running;
+using System.Text.Json;
+using OrmPerf.Console.Models;
 
-var scenariosAssembly = Assembly.GetExecutingAssembly();
-
-var config = Debugger.IsAttached ? new DebugInProcessConfig() : null;
-
-BenchmarkSwitcher
-    .FromAssembly(scenariosAssembly)
-    .RunAll(config);
+// TODO
+// var benchmarks = JsonSerializer.Deserialize<IEnumerable<Benchmarks>>();
