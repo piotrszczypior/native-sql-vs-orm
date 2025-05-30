@@ -16,9 +16,10 @@ namespace OrmPerf.TestBench.Scenarios.Abstract;
 [JsonExporterAttribute.Full]
 public abstract class Benchmark<TInheritor>
 {
-    protected IServiceProvider ServiceProvider { get; private set; }
+    private IServiceProvider ServiceProvider { get; set; }
     protected DbContext DbContext { get; private set; }
     protected NpgsqlConnection NpgsqlConnection { get; private set; }
+    protected SqlCapturingInterceptor _capturingInterceptor { get; private set; }
     
     [GlobalSetup]
     public void Setup()
@@ -29,18 +30,21 @@ public abstract class Benchmark<TInheritor>
         
         var serviceCollection = new ServiceCollection();
 
-        var postgreSqlContainer = new PostgreSqlBuilder()
-            .WithLogger(NullLogger.Instance)
-            .WithName($"postgres-{typeof(TInheritor).Name.ToLowerInvariant()}-{Guid.NewGuid()}")
-            .Build();
+        // var postgreSqlContainer = new PostgreSqlBuilder()
+        //     .WithLogger(NullLogger.Instance)
+        //     .WithName($"postgres-{typeof(TInheritor).Name.ToLowerInvariant()}-{Guid.NewGuid()}")
+        //     .Build();
+        //
+        // AsyncUtilities.RunSync(() => postgreSqlContainer.StartAsync());
         
-        AsyncUtilities.RunSync(() => postgreSqlContainer.StartAsync());
-        
-        var connectionString = postgreSqlContainer.GetConnectionString();
-        
+        // var connectionString = postgreSqlContainer.GetConnectionString();
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        _capturingInterceptor = new SqlCapturingInterceptor();
+
         serviceCollection.AddDbContext<DbContext>(builder =>
         {
             builder.UseNpgsql(connectionString);
+            builder.AddInterceptors(_capturingInterceptor);
         });
         serviceCollection.AddScoped<NpgsqlConnection>(_ => new NpgsqlConnection(connectionString));
 

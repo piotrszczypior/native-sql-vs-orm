@@ -20,6 +20,8 @@ public class CustomerEntity : Entity, IEntityTypeConfiguration<CustomerEntity>
     public DateTime LastUpdate { get; set; }
     
     public ICollection<RentalEntity> Rentals { get; set; }
+    
+    public ICollection<PaymentEntity> Payments { get; set; }
 
     public void Configure(EntityTypeBuilder<CustomerEntity> builder)
     {

@@ -7,7 +7,13 @@ using OrmPerf.TestBench;
 
 var scenariosAssembly = Assembly.GetExecutingAssembly();
 
+// TODO
+// await DockerRunner.RunDockerPostgres();
+
 var config = Debugger.IsAttached ? new DebugInProcessConfig() : DefaultConfig.Instance;
+
+// TODO: Remove this during test runs
+config = config.WithOptions(ConfigOptions.DisableOptimizationsValidator);
 
 config.AddExporter(JsonExporter.Full);
 

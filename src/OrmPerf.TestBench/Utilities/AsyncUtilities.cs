@@ -6,8 +6,8 @@ internal static class AsyncUtilities
 {
     private static readonly TaskFactory _taskFactory = new(
         CancellationToken.None,
-        TaskCreationOptions.None, 
-        TaskContinuationOptions.None, 
+        TaskCreationOptions.None,
+        TaskContinuationOptions.None,
         TaskScheduler.Default);
 
     public static TResult RunSync<TResult>(Func<Task<TResult>> func)

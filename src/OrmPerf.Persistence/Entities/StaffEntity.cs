@@ -10,12 +10,12 @@ public class StaffEntity : Entity, IEntityTypeConfiguration<StaffEntity>
 
     public int AddressId { get; set; }
     public AddressEntity Address { get; set; }
-    
+
     public string? Email { get; set; }
 
     public int StoreId { get; set; }
     public StoreEntity Store { get; set; }
-    
+
     public bool IsActive { get; set; }
     public string Username { get; set; }
     public string? Password { get; set; }
@@ -23,7 +23,9 @@ public class StaffEntity : Entity, IEntityTypeConfiguration<StaffEntity>
     public byte[]? Picture { get; set; }
 
     public ICollection<StoreEntity> Stores { get; set; }
-    
+
+    public ICollection<PaymentEntity> Payments { get; set; }
+
     public void Configure(EntityTypeBuilder<StaffEntity> builder)
     {
         builder.Property(e => e.FirstName)
@@ -40,6 +42,5 @@ public class StaffEntity : Entity, IEntityTypeConfiguration<StaffEntity>
         builder.HasOne(e => e.Store)
             .WithMany(e => e.Staff)
             .HasForeignKey(e => e.StoreId);
-
     }
 }
