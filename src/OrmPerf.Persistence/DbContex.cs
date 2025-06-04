@@ -26,6 +26,7 @@ public class DbContext : EfDbContext
     public DbSet<CityEntity> Cities { get; set; }
     public DbSet<CountryEntity> Countries { get; set; }
     public DbSet<StaffEntity> Staff { get; set; }
+    public DbSet<PaymentEntity> Payments { get; set; }
 
     public DbContext(DbContextOptions<DbContext> options)
         : base(options)

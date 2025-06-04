@@ -7,11 +7,11 @@
     },
     "TestBench [Fast]": {
       "commandName": "Project",
-      "commandLineArgs": "--filter *SelectAllActorsOfTheMovieWithTheHighestRevenueProjection* --warmupCount 1 --iterationCount 1 --invocationCount 1 --unrollFactor 1 --noOverheadEvaluation"
+      "commandLineArgs": "--filter *InsertActorBenchmark* --warmupCount 1 --iterationCount 1 --invocationCount 1 --unrollFactor 1 --noOverheadEvaluation"
     },
     "TestBench [Regular]": {
       "commandName": "Project",
-      "commandLineArgs": "--filter *SelectAllActorsOfTheMovieWithTheHighestRevenueProjection*"
+      "commandLineArgs": "--filter *InsertActorBenchmark*"
     }
   }
 }

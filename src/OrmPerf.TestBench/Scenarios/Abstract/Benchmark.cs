@@ -40,7 +40,13 @@ public abstract class Benchmark<TInheritor>
         
         serviceCollection.AddDbContext<DbContext>(builder =>
         {
-            builder.UseNpgsql(connectionString);
+            builder.UseNpgsql(connectionString)
+                .EnableSensitiveDataLogging()
+                .LogTo(log =>
+                {
+                    SqlLogger.AddLogLine(log);
+                    Console.WriteLine(log);
+                });
         });
         serviceCollection.AddScoped<NpgsqlConnection>(_ => new NpgsqlConnection(connectionString));
 
@@ -53,7 +59,11 @@ public abstract class Benchmark<TInheritor>
     }
     
     [Benchmark(Baseline = true)]
-    public async Task Orm() => await OrmSubject();
+    public async Task Orm()
+    {
+        SqlLogger.Clear();
+        await OrmSubject();
+    }
     protected abstract Task OrmSubject();
     
     [Benchmark]
