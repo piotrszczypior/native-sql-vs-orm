@@ -1,5 +1,6 @@
 using BenchmarkDotNet.Attributes;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using OrmPerf.TestBench.Utilities;
 
 namespace OrmPerf.TestBench.Scenarios.Abstract;
 
@@ -12,7 +13,7 @@ public abstract class ScalarBenchmark<TInheritor> : Benchmark<TInheritor>
         var queryComparison = new SqlComparison
         {
             Raw = SqlQuery,
-            Orm = SqlQuery
+            Orm = SqlLogger.CapturedSql.FirstOrDefault()
         };
         BenchmarkMetadataStore.QueryComparisons.Add(typeof(TInheritor), queryComparison);
     }

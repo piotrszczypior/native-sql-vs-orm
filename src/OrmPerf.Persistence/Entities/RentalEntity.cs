@@ -19,6 +19,8 @@ public class RentalEntity : Entity, IEntityTypeConfiguration<RentalEntity>
     public DateTime RentalStart { get; set; }
     public DateTime? RentalEnd { get; set; }
     
+    public PaymentEntity Payment { get; set; }
+    
     public void Configure(EntityTypeBuilder<RentalEntity> builder)
     {
         builder.HasIndex(e => e.InventoryId);
