@@ -7,7 +7,7 @@
     },
     "TestBench [Fast]": {
       "commandName": "Project",
-      "commandLineArgs": "--filter *InsertActorBenchmark* --warmupCount 1 --iterationCount 1 --invocationCount 1 --unrollFactor 1 --noOverheadEvaluation"
+      "commandLineArgs": "--filter *SelectTop5MostRentedFilms* --warmupCount 1 --iterationCount 1 --invocationCount 1 --unrollFactor 1 --noOverheadEvaluation"
     },
     "TestBench [Regular]": {
       "commandName": "Project",
