@@ -5,8 +5,6 @@ namespace OrmPerf.Persistence.Entities;
 
 public class PaymentEntity : Entity, IEntityTypeConfiguration<PaymentEntity>
 {
-    public int PaymentId { get; set; }
-    
     public int CustomerId { get; set; }
     public CustomerEntity Customer { get; set; }
     
@@ -14,17 +12,15 @@ public class PaymentEntity : Entity, IEntityTypeConfiguration<PaymentEntity>
     public StaffEntity Staff { get; set; }
     
     public int RentalId { get; set; }
-    public RentalEntity rental { get; set; }
+    public RentalEntity Rental { get; set; }
     
-    public decimal amount { get; set; }
+    public decimal Amount { get; set; }
     
-    public DateTime paymentDate { get; set; }
+    public DateTime PaymentDate { get; set; }
     
     
     public void Configure(EntityTypeBuilder<PaymentEntity> builder)
     {
-        builder.HasIndex(e => e.PaymentId);
-
         builder.HasOne(e => e.Customer)
             .WithMany(e => e.Payments)
             .HasForeignKey(e => e.CustomerId);
@@ -33,7 +29,7 @@ public class PaymentEntity : Entity, IEntityTypeConfiguration<PaymentEntity>
             .WithMany(e => e.Payments)
             .HasForeignKey(e => e.StaffId);
         
-        builder.HasOne(e => e.rental)
+        builder.HasOne(e => e.Rental)
             .WithOne(e => e.Payment)
             .HasForeignKey<PaymentEntity>(e => e.RentalId);
     }

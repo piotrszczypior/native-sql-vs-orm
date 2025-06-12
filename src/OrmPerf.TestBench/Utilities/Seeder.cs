@@ -11,440 +11,570 @@ internal static class Seeder
         DateTime? lastUpdate = null,
         CancellationToken cancellationToken = default)
     {
-        var lastUpdateDate = (lastUpdate ?? new DateTime(2025, 01, 01)).ToUniversalTime();
-        
-        // Countries
-        var polandCountry = new CountryEntity
-        {
-            Country = "Poland",
-            LastUpdate = lastUpdateDate
-        };
-        var unitedStatesCountry = new CountryEntity
-        {
-            Country = "United States",
-            LastUpdate = lastUpdateDate
-        };
-        var germanyCountry = new CountryEntity
-        {
-            Country = "Germany",
-            LastUpdate = lastUpdateDate
-        };
+        var lastUpdateDate = (lastUpdate ?? new DateTime(2025, 01, 01))
+            .ToUniversalTime();
 
-        var countries = new List<CountryEntity>
-        {
-            polandCountry,
-            unitedStatesCountry,
-            germanyCountry
-        };
-        
+        var countries = GenerateCountries(lastUpdateDate);
         context.AddRange(countries);
         await context.SaveChangesAsync(cancellationToken);
 
-        // Cities
-        var wroclawCity = new CityEntity
-        {
-            City = "Wrocław",
-            Country = polandCountry,
-            LastUpdate = lastUpdateDate
-        };
-        var warsawCity = new CityEntity
-        {
-            City = "Warsaw",
-            Country = polandCountry,
-            LastUpdate = lastUpdateDate
-        };
-        var katowiceCity = new CityEntity
-        {
-            City = "Katowice",
-            Country = polandCountry,
-            LastUpdate = lastUpdateDate
-        };
-        var washingtonCity = new CityEntity
-        {
-            City = "Washington",
-            Country = unitedStatesCountry,
-            LastUpdate = lastUpdateDate
-        };
-        var sanFranciscoCity = new CityEntity
-        {
-            City = "San Francisco",
-            Country = unitedStatesCountry,
-            LastUpdate = lastUpdateDate
-        };
-        var newYorkCity = new CityEntity
-        {
-            City = "New York",
-            Country = unitedStatesCountry,
-            LastUpdate = lastUpdateDate
-        };
-        var berlinCity = new CityEntity
-        {
-            City = "Berlin",
-            Country = germanyCountry,
-            LastUpdate = lastUpdateDate
-        };
-
-        var cities = new List<CityEntity>
-        {
-            wroclawCity,
-            warsawCity,
-            katowiceCity,
-            washingtonCity,
-            sanFranciscoCity,
-            newYorkCity,
-            berlinCity
-        };
-        
+        var cities = GenerateCities(countries, lastUpdateDate);
         context.AddRange(cities);
         await context.SaveChangesAsync(cancellationToken);
 
-        // Addresses
-        var wladyslawaSikorskiegoAddress = new AddressEntity
-        {
-            Address = "Gen. Władysława Sikorskiego",
-            Address2 = "5b/12",
-            District = "Wrocław",
-            City = wroclawCity,
-            PostCode = "53-659",
-            Phone = "531742125",
-            LastUpdate = lastUpdateDate
-        };
-        var kazimierzaWielkiegoAddress = new AddressEntity
-        {
-            Address = "Kazimierza Wielkiego",
-            Address2 = "81/8",
-            District = "Wrocław",
-            City = wroclawCity,
-            PostCode = "50-056",
-            Phone = "732653231",
-            LastUpdate = lastUpdateDate
-        };
-        var julianaUrsynaNiemcewiczaAddress = new AddressEntity
-        {
-            Address = "Juliana Ursyna Niemcewicza",
-            Address2 = "25",
-            District = "Wrocław",
-            City = wroclawCity,
-            PostCode = "50-238",
-            Phone = "213742069",
-            LastUpdate = lastUpdateDate
-        };
-
-        var addresses = new List<AddressEntity>
-        {
-            wladyslawaSikorskiegoAddress,
-            kazimierzaWielkiegoAddress,
-            julianaUrsynaNiemcewiczaAddress
-        };
-
+        var addresses = GenerateAddresses(cities, lastUpdateDate);
         context.AddRange(addresses);
         await context.SaveChangesAsync(cancellationToken);
-        
-        // Actors
-        var johnTravoltaActor = new ActorEntity
-        {
-            FirstName = "John",
-            LastName = "Travolta",
-            LastUpdate = lastUpdateDate
-        };
-        var umaThurmanActor = new ActorEntity
-        {
-            FirstName = "Uma",
-            LastName = "Thurman",
-            LastUpdate = lastUpdateDate
-        };
-        var samuelJacksonActor = new ActorEntity
-        {
-            FirstName = "Samuel",
-            LastName = "Jackson",
-            LastUpdate = lastUpdateDate
-        };
-        var bruceWillisActor = new ActorEntity
-        {
-            FirstName = "Bruce",
-            LastName = "Willis",
-            LastUpdate = lastUpdateDate
-        };
-        var timRothActor = new ActorEntity
-        {
-            FirstName = "Tim",
-            LastName = "Roth",
-            LastUpdate = lastUpdateDate
-        };
-        var amandaPlummerActor = new ActorEntity
-        {
-            FirstName = "Amanda",
-            LastName = "Plummer",
-            LastUpdate = lastUpdateDate
-        };
-        
-        var actors = new List<ActorEntity>
-        {
-            johnTravoltaActor,
-            umaThurmanActor,
-            samuelJacksonActor,
-            bruceWillisActor,
-            timRothActor,
-            amandaPlummerActor
-        };
-        
-        context.AddRange(actors);
-        await context.SaveChangesAsync(cancellationToken);
 
-        // Languages
-        var polishLanguage = new LanguageEntity
-        {
-            Name = "Polish",
-            LastUpdate = lastUpdateDate
-        };
-        var englishLanguage = new LanguageEntity
-        {
-            Name = "English",
-            LastUpdate = lastUpdateDate
-        };
-        var germanLanguage = new LanguageEntity
-        {
-            Name = "German",
-            LastUpdate = lastUpdateDate
-        };
-
-        var languages = new List<LanguageEntity>
-        {
-            polishLanguage,
-            englishLanguage,
-            germanLanguage
-        };
-        
+        var languages = GenerateLanguages(lastUpdateDate);
         context.AddRange(languages);
         await context.SaveChangesAsync(cancellationToken);
 
-        // Films
-        var pulpFictionFilm = new FilmEntity
-        {
-            Title = "Pulp Fiction",
-            Description = "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
-            ReleaseYear = 1994,
-            Language = englishLanguage,
-            OriginalLanguage = englishLanguage,
-            RentalDuration = 14,
-            RentalRate = 9.99M,
-            Length = 194,
-            ReplacementCost = 19.99M,
-            Rating = MpaaRating.R,
-            LastUpdate = lastUpdateDate,
-            SpecialFeatures = Array.Empty<string>(),
-            FullText = "No, forget it, it's too risky. I'm through doin' that shit. [...]",
-            RevenueProjection = 199.99M
-        };
+        var actors = GenerateActors(lastUpdateDate);
+        context.AddRange(actors);
+        await context.SaveChangesAsync(cancellationToken);
 
-        var films = new List<FilmEntity>
-        {
-            pulpFictionFilm
-        };
-        
+        var categories = GenerateCategories(lastUpdateDate);
+        context.AddRange(categories);
+        await context.SaveChangesAsync(cancellationToken);
+
+        var films = GenerateFilms(languages, lastUpdateDate);
         context.AddRange(films);
         await context.SaveChangesAsync(cancellationToken);
 
-        // Films actors
-        var johnTravoltaInPulpFictionFilmActor = new FilmActorEntity
-        {
-            ActorId = johnTravoltaActor.Id,
-            Actor = johnTravoltaActor,
-            FilmId = pulpFictionFilm.Id,
-            Film = pulpFictionFilm,
-            LastUpdate = lastUpdateDate
-        };
-
-        var filmActors = new List<FilmActorEntity>
-        {
-            johnTravoltaInPulpFictionFilmActor
-        };
-        
+        var filmActors = GenerateFilmActors(films, actors, lastUpdateDate);
         context.AddRange(filmActors);
         await context.SaveChangesAsync(cancellationToken);
 
-        // Categories
-        var darkComedyCategory = new CategoryEntity
-        {
-            Name = "Dark Comedy",
-            LastUpdated = lastUpdateDate
-        };
-        var drugCrimeCategory = new CategoryEntity
-        {
-            Name = "Drug Crime",
-            LastUpdated = lastUpdateDate
-        };
-        var gangsterCategory = new CategoryEntity
-        {
-            Name = "Gangster",
-            LastUpdated = lastUpdateDate
-        };
-        var crimeCategory = new CategoryEntity
-        {
-            Name = "Crime",
-            LastUpdated = lastUpdateDate
-        };
-        var dramaCategory = new CategoryEntity
-        {
-            Name = "Drama",
-            LastUpdated = lastUpdateDate
-        };
-        var actionCategory = new CategoryEntity
-        {
-            Name = "Action",
-            LastUpdated = lastUpdateDate
-        };
-        var horrorCategory = new CategoryEntity
-        {
-            Name = "Horror",
-            LastUpdated = lastUpdateDate
-        };
-
-        var categories = new List<CategoryEntity>
-        {
-            darkComedyCategory,
-            drugCrimeCategory,
-            gangsterCategory,
-            crimeCategory,
-            dramaCategory,
-            actionCategory,
-            horrorCategory
-        };
-        
-        context.AddRange(categories);
-        await context.SaveChangesAsync(cancellationToken);
-        
-        // Films categories
-        var pulpFictionDarkComedyCategory = new FilmCategoryEntity
-        {
-            Film = pulpFictionFilm,
-            Category = darkComedyCategory
-        };
-        var pulpFictionDrugCrimeCategory = new FilmCategoryEntity
-        {
-            Film = pulpFictionFilm,
-            Category = drugCrimeCategory
-        };
-        var pulpFictionGangsterCategory = new FilmCategoryEntity
-        {
-            Film = pulpFictionFilm,
-            Category = gangsterCategory
-        };
-        var pulpFictionCrimeCategory = new FilmCategoryEntity
-        {
-            Film = pulpFictionFilm,
-            Category = crimeCategory
-        };
-        var pulpFictionDramaCategory = new FilmCategoryEntity
-        {
-            Film = pulpFictionFilm,
-            Category = dramaCategory
-        };
-
-        var filmsCategories = new List<FilmCategoryEntity>
-        {
-            pulpFictionDarkComedyCategory,
-            pulpFictionDrugCrimeCategory,
-            pulpFictionGangsterCategory,
-            pulpFictionCrimeCategory,
-            pulpFictionDramaCategory
-        };
-        
-        context.AddRange(filmsCategories);
+        var filmCategories = GenerateFilmCategories(films, categories);
+        context.AddRange(filmCategories);
         await context.SaveChangesAsync(cancellationToken);
 
-        // Stores
-        var netflixStore = new StoreEntity
-        {
-            Address = kazimierzaWielkiegoAddress,
-            LastUpdate = lastUpdateDate
-        };
-
-        var stores = new List<StoreEntity>
-        {
-            netflixStore
-        };
-        
+        var stores = GenerateStores(addresses, lastUpdateDate);
         context.AddRange(stores);
         await context.SaveChangesAsync(cancellationToken);
-        
-        // Staff
-        var pawelKleszczStaff = new StaffEntity
-        {
-            FirstName = "Paweł",
-            LastName = "Kleszcz",
-            Address = wladyslawaSikorskiegoAddress,
-            Email = "p.kleszcz@example.com",
-            Store = netflixStore,
-            IsActive = false,
-            Username = "pkleszcz",
-            Password = "6aad43a307868eb673b212ed9be344ce",
-            LastUpdate = lastUpdateDate,
-            Picture = null
-        };
 
-        var staff = new List<StaffEntity>
-        {
-            pawelKleszczStaff
-        };
-
+        var staff = GenerateStaff(stores, addresses, lastUpdateDate);
         context.AddRange(staff);
         await context.SaveChangesAsync(cancellationToken);
 
-        // Inventories
-        var pulpFictionNetflixInventory = new InventoryEntity
-        {
-            Film = pulpFictionFilm,
-            Store = netflixStore,
-            LastUpdate = lastUpdateDate
-        };
-
-        var inventories = new List<InventoryEntity>
-        {
-            pulpFictionNetflixInventory
-        };
-
+        var inventories = GenerateInventories(stores, films, lastUpdateDate);
         context.AddRange(inventories);
         await context.SaveChangesAsync(cancellationToken);
-        
-        // Customers
-        var janeDoeCustomer = new CustomerEntity
-        {
-            Store = netflixStore,
-            FirstName = "Jane",
-            LastName = "Doe",
-            Email = "jane.doe@example.com",
-            Address = julianaUrsynaNiemcewiczaAddress,
-            IsActive = true,
-            CreateDate = lastUpdateDate,
-            LastUpdate = lastUpdateDate
-        };
 
-        var customers = new List<CustomerEntity>
-        {
-            janeDoeCustomer
-        };
-        
+        var customers = GenerateCustomers(stores, addresses, lastUpdateDate);
         context.AddRange(customers);
         await context.SaveChangesAsync(cancellationToken);
-        
-        // Rentals
-        var janeDoePulpFictionRental = new RentalEntity
-        {
-            Inventory = pulpFictionNetflixInventory,
-            Customer = janeDoeCustomer,
-            Staff = pawelKleszczStaff,
-            LastUpdate = lastUpdateDate,
-            RentalStart = lastUpdateDate,
-            RentalEnd = null
-        };
 
-        var rentals = new List<RentalEntity>
-        {
-            janeDoePulpFictionRental
-        };
-        
+        var rentals = GenerateRentals(customers, inventories, staff, lastUpdateDate);
         context.AddRange(rentals);
         await context.SaveChangesAsync(cancellationToken);
+    }
+
+    private static List<CountryEntity> GenerateCountries(DateTime lastUpdateDate)
+    {
+        var countryNames = new[]
+        {
+            "Poland", "USA", "Germany", "France", "UK", "Italy", "Spain", "Japan", "Canada", "Australia",
+            "Brazil", "Mexico", "Argentina", "India", "China", "S Korea", "Russia", "Netherlands", "Belgium", "Switzerland",
+            "Austria", "Sweden", "Norway", "Denmark", "Finland", "Portugal", "Greece", "Turkey", "Egypt", "S Africa",
+            "Nigeria", "Kenya", "Morocco", "Israel", "Saudi", "UAE", "Iran", "Iraq", "Afghanistan", "Pakistan",
+            "Bangladesh", "Thailand", "Vietnam", "Philippines", "Indonesia", "Malaysia", "Singapore", "N Zealand", "Chile", "Peru"
+        };
+
+        return countryNames.Select(name => new CountryEntity
+        {
+            Country = name,
+            LastUpdate = lastUpdateDate
+        }).ToList();
+    }
+
+    private static List<CityEntity> GenerateCities(List<CountryEntity> countries, DateTime lastUpdateDate)
+    {
+        var citiesData = new Dictionary<string, string[]>
+        {
+            ["Poland"] = new[] { "Warsaw", "Krakow", "Wroclaw", "Poznan", "Gdansk", "Szczecin", "Bydgoszcz", "Lublin", "Katowice", "Bialystok" },
+            ["USA"] = new[] { "NYC", "LA", "Chicago", "Houston", "Phoenix", "Philly", "San Antonio", "San Diego", "Dallas", "San Jose" },
+            ["Germany"] = new[] { "Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt", "Stuttgart", "Dusseldorf", "Leipzig", "Dortmund", "Essen" },
+            ["France"] = new[] { "Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Montpellier", "Strasbourg", "Bordeaux", "Lille" },
+            ["UK"] = new[] { "London", "Birmingham", "Manchester", "Glasgow", "Liverpool", "Leeds", "Sheffield", "Edinburgh", "Bristol", "Cardiff" },
+            ["Italy"] = new[] { "Rome", "Milan", "Naples", "Turin", "Palermo", "Genoa", "Bologna", "Florence", "Bari", "Catania" },
+            ["Spain"] = new[] { "Madrid", "Barcelona", "Valencia", "Seville", "Zaragoza", "Malaga", "Murcia", "Palma", "Las Palmas", "Bilbao" },
+            ["Japan"] = new[] { "Tokyo", "Yokohama", "Osaka", "Nagoya", "Sapporo", "Fukuoka", "Kobe", "Kawasaki", "Kyoto", "Saitama" },
+            ["Canada"] = new[] { "Toronto", "Montreal", "Vancouver", "Calgary", "Edmonton", "Ottawa", "Winnipeg", "Quebec", "Hamilton", "Kitchener" },
+            ["Australia"] = new[] { "Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Gold Coast", "Newcastle", "Canberra", "Sunshine", "Wollongong" }
+        };
+
+        var cities = new List<CityEntity>();
+        
+        foreach (var country in countries)
+        {
+            if (citiesData.ContainsKey(country.Country))
+            {
+                foreach (var cityName in citiesData[country.Country])
+                {
+                    cities.Add(new CityEntity
+                    {
+                        City = cityName,
+                        Country = country,
+                        LastUpdate = lastUpdateDate
+                    });
+                }
+            }
+            else
+            {
+                for (int i = 1; i <= 5; i++)
+                {
+                    cities.Add(new CityEntity
+                    {
+                        City = $"City{i}",
+                        Country = country,
+                        LastUpdate = lastUpdateDate
+                    });
+                }
+            }
+        }
+
+        return cities;
+    }
+
+    private static List<AddressEntity> GenerateAddresses(List<CityEntity> cities, DateTime lastUpdateDate)
+    {
+        var streetNames = new[]
+        {
+            "Main St", "Oak Ave", "Park Rd", "Church Ln", "High St", "King St", "Queen St", "Victoria Rd", "Station Rd", "Mill Ln",
+            "School St", "Market Sq", "Castle St", "Bridge Rd", "Hill St", "Garden Ave", "Forest Rd", "River St", "Lake Dr", "Mountain Vw"
+        };
+
+        var addresses = new List<AddressEntity>();
+        int addressIndex = 0;
+
+        foreach (var city in cities)
+        {
+            int addressesPerCity = city.Country.Country switch
+            {
+                "USA" => 50,
+                "Poland" => 30,
+                "Germany" => 25,
+                "France" => 20,
+                "UK" => 20,
+                _ => 10
+            };
+
+            for (int i = 0; i < addressesPerCity; i++)
+            {
+                var streetName = streetNames[addressIndex % streetNames.Length];
+                var buildingNumber = (addressIndex % 999) + 1;
+                var apartmentNumber = addressIndex % 3 == 0 ? $"/{(addressIndex % 100) + 1}" : "";
+
+                addresses.Add(new AddressEntity
+                {
+                    Address = streetName,
+                    Address2 = $"{buildingNumber}{apartmentNumber}",
+                    District = city.City,
+                    City = city,
+                    PostCode = GeneratePostCode(city.Country.Country, addressIndex),
+                    Phone = GeneratePhoneNumber(city.Country.Country, addressIndex),
+                    LastUpdate = lastUpdateDate
+                });
+
+                addressIndex++;
+            }
+        }
+
+        return addresses;
+    }
+
+    private static List<LanguageEntity> GenerateLanguages(DateTime lastUpdateDate)
+    {
+        var languageNames = new[]
+        {
+            "English", "Spanish", "French", "German", "Italian", "Portuguese", "Russian", "Japanese", "Korean", "Chinese",
+            "Arabic", "Hindi", "Bengali", "Punjabi", "Urdu", "Indonesian", "Malay", "Thai", "Vietnamese", "Turkish",
+            "Polish", "Dutch", "Swedish", "Norwegian", "Danish", "Finnish", "Greek", "Hebrew", "Czech", "Hungarian"
+        };
+
+        return languageNames.Select(name => new LanguageEntity
+        {
+            Name = name,
+            LastUpdate = lastUpdateDate
+        }).ToList();
+    }
+
+    private static List<ActorEntity> GenerateActors(DateTime lastUpdateDate)
+    {
+        var firstNames = new[]
+        {
+            "James", "Robert", "John", "Michael", "William", "David", "Richard", "Joseph", "Thomas", "Chris",
+            "Charles", "Daniel", "Matthew", "Anthony", "Mark", "Donald", "Steven", "Paul", "Andrew", "Joshua",
+            "Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara", "Susan", "Jessica", "Sarah", "Karen"
+        };
+
+        var lastNames = new[]
+        {
+            "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez",
+            "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin"
+        };
+
+        var actors = new List<ActorEntity>();
+        int actorIndex = 0;
+
+        for (int i = 0; i < 2000; i++)
+        {
+            actors.Add(new ActorEntity
+            {
+                FirstName = firstNames[actorIndex % firstNames.Length],
+                LastName = lastNames[(actorIndex / firstNames.Length) % lastNames.Length],
+                LastUpdate = lastUpdateDate
+            });
+            actorIndex++;
+        }
+
+        return actors;
+    }
+
+    private static List<CategoryEntity> GenerateCategories(DateTime lastUpdateDate)
+    {
+        var categoryNames = new[]
+        {
+            "Action", "Adventure", "Animation", "Biography", "Comedy", "Crime", "Documentary", "Drama", "Family", "Fantasy",
+            "Film-Noir", "History", "Horror", "Music", "Musical", "Mystery", "Romance", "Sci-Fi", "Sport", "Thriller",
+            "War", "Western", "Superhero", "Psychological", "Neo-Noir", "Heist", "Martial Arts", "Disaster", "Spy", "Zombie"
+        };
+
+        return categoryNames.Select(name => new CategoryEntity
+        {
+            Name = name,
+            LastUpdated = lastUpdateDate
+        }).ToList();
+    }
+
+    private static List<FilmEntity> GenerateFilms(List<LanguageEntity> languages, DateTime lastUpdateDate)
+    {
+        var titles = new[]
+        {
+            "Shattered Mirror", "Echoes Tomorrow", "Midnight Paradise", "Last Guardian", "Whispers Dark",
+            "City Dreams", "Forgotten Path", "Shadows Past", "Beyond Horizon", "Silent Storm",
+            "Dancing Destiny", "Crimson Tide", "Secrets Heart", "Golden Hour", "Beneath Surface",
+            "Wandering Soul", "Flames Passion", "Hidden Truth", "Voices Beyond", "Eternal Journey"
+        };
+
+        var descriptions = new[]
+        {
+            "A gripping tale of love, loss, and redemption.",
+            "An epic adventure that spans generations.",
+            "A psychological thriller that keeps you guessing.",
+            "A heartwarming story about family and friendship.",
+            "A dark journey into the mind of a complex character.",
+            "An action-packed adventure with stunning visuals.",
+            "A romantic drama exploring modern relationships.",
+            "A science fiction epic pushing imagination.",
+            "A historical drama bringing the past to life.",
+            "A comedy that will have you laughing."
+        };
+
+        var films = new List<FilmEntity>();
+        int filmIndex = 0;
+
+        for (int i = 0; i < 500; i++)
+        {
+            var languageIndex = filmIndex % languages.Count;
+            var originalLanguageIndex = (filmIndex + 1) % languages.Count;
+            var titleIndex = filmIndex % titles.Length;
+            var descriptionIndex = filmIndex % descriptions.Length;
+
+            films.Add(new FilmEntity
+            {
+                Title = titles[titleIndex] + (i >= titles.Length ? $" {i / titles.Length + 1}" : ""),
+                Description = descriptions[descriptionIndex],
+                ReleaseYear = 1950 + (filmIndex % 75),
+                Language = languages[languageIndex],
+                OriginalLanguage = languages[originalLanguageIndex],
+                RentalDuration = 3 + (filmIndex % 28),
+                RentalRate = Math.Round(0.99M + (filmIndex % 1500) / 100M, 2),
+                Length = 80 + (filmIndex % 160),
+                ReplacementCost = Math.Round(9.99M + (filmIndex % 4000) / 100M, 2),
+                Rating = (MpaaRating)(filmIndex % 5),
+                LastUpdate = lastUpdateDate,
+                SpecialFeatures = GenerateSpecialFeatures(filmIndex),
+                FullText = GenerateFullText(filmIndex),
+                RevenueProjection = Math.Round((filmIndex % 1000M) + 100M, 2)
+            });
+
+            filmIndex++;
+        }
+
+        return films;
+    }
+
+    private static string[] GenerateSpecialFeatures(int index)
+    {
+        var features = new[] { "Trailers", "Commentaries", "Deleted Scenes", "Behind Scenes" };
+        var count = (index % 3) + 1;
+        return features.Take(count).ToArray();
+    }
+
+    private static string GenerateFullText(int index)
+    {
+        var quotes = new[]
+        {
+            "Life is what happens.",
+            "Do great work.",
+            "Remember friends.",
+            "Believe in dreams.",
+            "Focus on light.",
+            "Continue with courage.",
+            "Begin the journey.",
+            "Find inner summer.",
+            "Be yourself.",
+            "Universe is infinite."
+        };
+
+        return quotes[index % quotes.Length];
+    }
+
+    private static List<FilmActorEntity> GenerateFilmActors(List<FilmEntity> films, List<ActorEntity> actors, DateTime lastUpdateDate)
+    {
+        var filmActors = new List<FilmActorEntity>();
+        int actorIndex = 0;
+
+        foreach (var film in films)
+        {
+            var actorCount = 2 + (film.Id % 6);
+            
+            for (int i = 0; i < actorCount; i++)
+            {
+                var actor = actors[actorIndex % actors.Count];
+                filmActors.Add(new FilmActorEntity
+                {
+                    ActorId = actor.Id,
+                    Actor = actor,
+                    FilmId = film.Id,
+                    Film = film,
+                    LastUpdate = lastUpdateDate
+                });
+                actorIndex++;
+            }
+        }
+
+        return filmActors;
+    }
+
+    private static List<FilmCategoryEntity> GenerateFilmCategories(List<FilmEntity> films, List<CategoryEntity> categories)
+    {
+        var filmCategories = new List<FilmCategoryEntity>();
+        int categoryIndex = 0;
+
+        foreach (var film in films)
+        {
+            var categoryCount = 1 + (film.Id % 3);
+            
+            for (int i = 0; i < categoryCount; i++)
+            {
+                var category = categories[categoryIndex % categories.Count];
+                filmCategories.Add(new FilmCategoryEntity
+                {
+                    Film = film,
+                    Category = category
+                });
+                categoryIndex++;
+            }
+        }
+
+        return filmCategories;
+    }
+
+    private static List<StoreEntity> GenerateStores(List<AddressEntity> addresses, DateTime lastUpdateDate)
+    {
+        var stores = new List<StoreEntity>();
+        
+        for (int i = 0; i < 100; i++)
+        {
+            stores.Add(new StoreEntity
+            {
+                Address = addresses[i % addresses.Count],
+                LastUpdate = lastUpdateDate
+            });
+        }
+
+        return stores;
+    }
+
+    private static List<StaffEntity> GenerateStaff(List<StoreEntity> stores, List<AddressEntity> addresses, DateTime lastUpdateDate)
+    {
+        var staff = new List<StaffEntity>();
+        var firstNames = new[] { "John", "Jane", "Mike", "Sarah", "David", "Emma", "Bob", "Lisa", "Jim", "Maria" };
+        var lastNames = new[] { "Smith", "Johnson", "Brown", "Davis", "Wilson", "Miller", "Moore", "Taylor", "Anderson", "Thomas" };
+        
+        int staffIndex = 0;
+
+        foreach (var store in stores)
+        {
+            var staffCount = 2 + (store.Id % 4);
+            
+            for (int i = 0; i < staffCount; i++)
+            {
+                var firstName = firstNames[staffIndex % firstNames.Length];
+                var lastName = lastNames[(staffIndex / firstNames.Length) % lastNames.Length];
+                
+                staff.Add(new StaffEntity
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Address = addresses[staffIndex % addresses.Count],
+                    Email = $"{firstName.ToLower()}.{lastName.ToLower()}{staffIndex}@test.com",
+                    Store = store,
+                    IsActive = staffIndex % 10 != 0,
+                    Username = $"{firstName.ToLower()}{staffIndex}",
+                    Password = GenerateHash(staffIndex),
+                    LastUpdate = lastUpdateDate,
+                    Picture = null
+                });
+                
+                staffIndex++;
+            }
+        }
+
+        return staff;
+    }
+
+    private static List<InventoryEntity> GenerateInventories(List<StoreEntity> stores, List<FilmEntity> films, DateTime lastUpdateDate)
+    {
+        var inventories = new List<InventoryEntity>();
+        int inventoryIndex = 0;
+
+        foreach (var store in stores)
+        {
+            var filmsInStore = films.Skip((store.Id % 10) * 20).Take(100 + (store.Id % 50));
+            
+            foreach (var film in filmsInStore)
+            {
+                var copies = 1 + (inventoryIndex % 7);
+                
+                for (int i = 0; i < copies; i++)
+                {
+                    inventories.Add(new InventoryEntity
+                    {
+                        Film = film,
+                        Store = store,
+                        LastUpdate = lastUpdateDate
+                    });
+                }
+                
+                inventoryIndex++;
+            }
+        }
+
+        return inventories;
+    }
+
+    private static List<CustomerEntity> GenerateCustomers(List<StoreEntity> stores, List<AddressEntity> addresses, DateTime lastUpdateDate)
+    {
+        var customers = new List<CustomerEntity>();
+        var firstNames = new[] { "Alice", "Bob", "Charlie", "Diana", "Ed", "Fiona", "George", "Hannah", "Ian", "Julia" };
+        var lastNames = new[] { "Adams", "Baker", "Clark", "Davis", "Evans", "Fisher", "Green", "Harris", "Jackson", "King" };
+        
+        int customerIndex = 0;
+
+        for (int i = 0; i < 10000; i++)
+        {
+            var firstName = firstNames[customerIndex % firstNames.Length];
+            var lastName = lastNames[(customerIndex / firstNames.Length) % lastNames.Length];
+            var store = stores[customerIndex % stores.Count];
+            var createDate = lastUpdateDate.AddDays(-(customerIndex % 1095));
+            
+            customers.Add(new CustomerEntity
+            {
+                Store = store,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = $"{firstName.ToLower()}.{lastName.ToLower()}{customerIndex}@test.com",
+                Address = addresses[customerIndex % addresses.Count],
+                IsActive = customerIndex % 20 != 0,
+                CreateDate = createDate,
+                LastUpdate = createDate.AddDays(customerIndex % 100)
+            });
+            
+            customerIndex++;
+        }
+
+        return customers;
+    }
+
+    private static List<RentalEntity> GenerateRentals(List<CustomerEntity> customers, List<InventoryEntity> inventories, List<StaffEntity> staff, DateTime lastUpdateDate)
+    {
+        var rentals = new List<RentalEntity>();
+        int rentalIndex = 0;
+
+        for (int i = 0; i < 50000; i++)
+        {
+            var customer = customers[rentalIndex % customers.Count];
+            var availableInventories = inventories.Where(inv => inv.Store == customer.Store).ToList();
+            
+            if (availableInventories.Any())
+            {
+                var inventory = availableInventories[rentalIndex % availableInventories.Count];
+                var availableStaff = staff.Where(s => s.Store == customer.Store && s.IsActive).ToList();
+                
+                if (availableStaff.Any())
+                {
+                    var staffMember = availableStaff[rentalIndex % availableStaff.Count];
+                    var rentalStart = lastUpdateDate.AddDays(-(rentalIndex % 730));
+                    var isReturned = rentalIndex % 5 != 0;
+
+                    rentals.Add(new RentalEntity
+                    {
+                        Inventory = inventory,
+                        Customer = customer,
+                        Staff = staffMember,
+                        LastUpdate = lastUpdateDate,
+                        RentalStart = rentalStart,
+                        RentalEnd = isReturned ? rentalStart.AddDays((rentalIndex % 45) + 1) : null
+                    });
+                }
+            }
+            
+            rentalIndex++;
+        }
+
+        return rentals;
+    }
+
+    private static string GeneratePostCode(string country, int index)
+    {
+        return country switch
+        {
+            "Poland" => $"{10 + (index % 89)}-{100 + (index % 899)}",
+            "USA" => $"{10000 + (index % 89999)}",
+            "Germany" => $"{10000 + (index % 89999)}",
+            "UK" => $"SW{1 + (index % 99)}",
+            _ => $"{10000 + (index % 89999)}"
+        };
+    }
+
+    private static string GeneratePhoneNumber(string country, int index)
+    {
+        return country switch
+        {
+            "Poland" => $"{100000000 + (index % 899999999)}",
+            "USA" => $"{2125550000 + (index % 9999)}",
+            "Germany" => $"{491234567 + (index % 999999)}",
+            _ => $"{100000000 + (index % 899999999)}"
+        };
+    }
+
+    private static string GenerateHash(int index)
+    {
+        const string chars = "abcdef0123456789";
+        var hash = "";
+        var temp = index;
+        
+        for (int i = 0; i < 32; i++)
+        {
+            hash += chars[temp % chars.Length];
+            temp = (temp / chars.Length) + i;
+        }
+        
+        return hash;
     }
 }

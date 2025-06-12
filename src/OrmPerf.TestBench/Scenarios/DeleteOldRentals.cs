@@ -4,15 +4,16 @@ using OrmPerf.TestBench.Scenarios.Abstract;
 
 namespace OrmPerf.TestBench.Scenarios;
 
-public class DeleteOldRentalsBenchmark : ScalarBenchmark<DeleteOldRentalsBenchmark>
+public class DeleteOldRentals : ScalarBenchmark<DeleteOldRentals>
 {
-    private static readonly DateTime Threshold = DateTime.UtcNow.AddYears(-5);
+    private readonly DateTime _cutoffDate = DateTime.UtcNow.AddYears(-2);
 
     protected override Func<Task<int>> OrmExecuteFactory => async () =>
     {
-        var oldRentals = DbContext.Rentals
-            .Where(r => r.RentalEnd < Threshold);
-
+        var oldRentals = await DbContext.Rentals
+            .Where(r => r.RentalStart < _cutoffDate)
+            .ToListAsync();
+        
         DbContext.Rentals.RemoveRange(oldRentals);
         return await DbContext.SaveChangesAsync();
     };
@@ -21,9 +22,11 @@ public class DeleteOldRentalsBenchmark : ScalarBenchmark<DeleteOldRentalsBenchma
 
     protected override string SqlQuery => """
                                           DELETE FROM "Rentals"
-                                          WHERE "RentalEnd" < @Threshold
+                                          WHERE "RentalStart" < @CutoffDate
                                           """;
 
-    protected override Task SqlSubject() =>
-        NpgsqlConnection.ExecuteAsync(SqlQuery, new { Threshold });
+    protected override async Task SqlSubject()
+    {
+        await NpgsqlConnection.ExecuteAsync(SqlQuery, new { CutoffDate = _cutoffDate });
+    }
 }

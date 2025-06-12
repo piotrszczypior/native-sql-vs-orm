@@ -8,7 +8,7 @@ namespace OrmPerf.TestBench.Scenarios;
 public class SelectStaffWithLargePayments : QueryBenchmark<SelectStaffWithLargePayments, StaffEntity>
 {
     protected override IQueryable<StaffEntity> OrmQuery => DbContext.Staff
-        .Where(s => s.Payments.Any(p => p.amount > 100));
+        .Where(s => s.Payments.Any(p => p.Amount > 100));
 
     protected override async Task OrmSubject()
     {
@@ -19,7 +19,7 @@ public class SelectStaffWithLargePayments : QueryBenchmark<SelectStaffWithLargeP
                                           SELECT DISTINCT s.*
                                           FROM "Staff" s
                                           JOIN "Payments" p ON s."Id" = p."StaffId"
-                                          WHERE p."amount" > 100
+                                          WHERE p."Amount" > 100
                                           """;
 
     protected override async Task SqlSubject()
